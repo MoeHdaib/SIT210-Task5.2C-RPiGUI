@@ -1,0 +1,77 @@
+from tkinter import *
+import tkinter.font
+from gpiozero import LED
+import RPi.GPIO
+
+RPi.GPIO.setmode(RPi.GPIO.BCM)
+
+
+## assign the pins
+ledRed = LED(14)
+ledBlue = LED(18)
+ledGreen = LED(23)
+
+
+## allocate the GUI in a variable 
+threeLEDs = Tk()
+## The title of the GUI
+threeLEDs.title("Three LEDs Toggler")
+## font type in GUI
+myfont = tkinter.font.Font(family = 'Helvetica', size = 12, weight = "bold")
+
+
+##Functions
+def ledTogglerRed():
+    if ledRed.is_lit:
+        ledRed.off()
+        ledButtonRed["text"] = "Turn LED on"
+    else:
+        ledRed.on()
+        ledBlue.off()
+        ledGreen.off()
+        ledButtonRed["text"] = "Turn LED off"
+        ledButtonBlue["text"] = "Turn LED on"
+        ledButtonGreen["text"] = "Turn LED on"
+        
+def ledTogglerBlue():
+    if ledBlue.is_lit:
+        ledBlue.off()
+        ledButtonBlue["text"] = "Turn LED on"
+    else:
+        ledBlue.on()
+        ledRed.off()
+        ledGreen.off()
+        ledButtonBlue["text"] = "Turn LED off"
+        ledButtonGreen["text"] = "Turn LED on"
+        ledButtonRed["text"] = "Turn LED on"
+        
+def ledTogglerGreen():
+    if ledGreen.is_lit:
+        ledGreen.off()
+        ledButtonGreen["text"] = "Turn LED on"
+    else:
+        ledGreen.on()
+        ledRed.off()
+        ledBlue.off()
+        ledButtonGreen["text"] = "Turn LED off"
+        ledButtonBlue["text"] = "Turn LED on"
+        ledButtonRed["text"] = "Turn LED on"
+        
+## Exit function
+def close():
+    RPi.GPIO.cleanup()
+    threeLEDs.destroy()
+    
+        
+## Assign every button in the GUI, their position and what they do if you press them 
+ledButtonRed = Button(threeLEDs, text = "Turn LED on", font = myfont, command = ledTogglerRed, bg = 'red', height = 1, width = 50)
+ledButtonRed.grid(row=0, column =1)
+
+ledButtonBlue = Button(threeLEDs, text = "Turn LED on", font = myfont, command = ledTogglerBlue, bg = 'blue', height = 1, width = 50)
+ledButtonBlue.grid(row=1, column =1)
+
+ledButtonGreen = Button(threeLEDs, text = "Turn LED on", font = myfont, command = ledTogglerGreen, bg = 'green', height = 1, width = 50)
+ledButtonGreen.grid(row=2, column =1)
+
+exitButton = Button(threeLEDs, text = "Exit", font = myfont, command = close, bg = 'pink', height = 1, width = 20)
+exitButton.grid(row=3, column=1)  
